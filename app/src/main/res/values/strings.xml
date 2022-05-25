@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">ToDoList</string>
+    <string name="page_title">My tasks</string>
+    <string name="categorie">Categorie</string>
+    <string name="cr_er_une_t_che">Créer une tâche</string>
+    <string name="cr_ation_de_t_che">Création de tâche</string>
+    <string name="titre_de_la_t_che">Titre de la tâche</string>
+    <string name="cat_gorie_de_la_t_che">Catégorie de la tâche</string>
+    <string name="d_scription">Déscription</string>
+    <string name="priorit_de_la_t_che">Priorité de la tâche</string>
+    <string name="annuler">Annuler</string>
+    <string name="ajouter">Ajouter</string>
+</resources>
