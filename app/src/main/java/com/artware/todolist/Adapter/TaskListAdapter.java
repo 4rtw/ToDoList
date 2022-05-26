@@ -1,25 +1,26 @@
-package com.artware.todolist;
+package com.artware.todolist.Adapter;
 
-import android.app.Activity;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.artware.todolist.Controler.AddTaskActivity;
 import com.artware.todolist.Modele.Task;
+import com.artware.todolist.R;
 import com.artware.todolist.Services.TaskService;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.checkbox.MaterialCheckBox;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHolder> {
 
@@ -46,10 +47,24 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Task task = taskList.get(position);
 
-        holder.title.setText(task.getTitle());
+        String title = task.getTitle();
+        String titleToShow = title.substring(0, Math.min(title.length(), 15));
+        if(title.length()>15){
+            titleToShow += "...";
+        }
+
+        holder.title.setText(titleToShow);
         holder.title.setChecked(task.isFinished());
-        holder.date.setText(task.getDueDate().toString());
-        holder.desc.setText(task.getDescription());
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("'Créée le' EEEE, dd MMMM yyyy 'à' hh:mm", Locale.FRANCE);
+        holder.date.setText(dateFormat.format(task.getDueDate()));
+
+        String description = task.getDescription();
+        String descriptionToShow = description.substring(0, Math.min(description.length(), 60));
+        if(description.length()>60){
+            descriptionToShow += "...";
+        }
+        holder.desc.setText(descriptionToShow);
 
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,15 +75,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
                 context.startActivity(i);
             }
         });
-
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                taskService.deleteTask(task.getId());
-                taskList.remove(holder.getAdapterPosition());
-                notifyItemRemoved(holder.getAdapterPosition());
-            }
-        });
     }
 
     @Override
@@ -76,12 +82,17 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
         return this.taskList.size();
     }
 
+    public void removeAt(int position){
+        taskService.deleteTask(taskList.get(position).getId());
+        taskList.remove(position);
+        notifyItemRemoved(position);
+    }
+
     class ViewHolder extends RecyclerView.ViewHolder{
 
         public TextView desc, date;
         MaterialCheckBox title;
         MaterialCardView card;
-        Button delete;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -90,7 +101,6 @@ public class TaskListAdapter extends RecyclerView.Adapter<TaskListAdapter.ViewHo
             date = itemView.findViewById(R.id.textViewDateItem);
             title = itemView.findViewById(R.id.checkBoxTitleItem);
             card = itemView.findViewById(R.id.cardItem);
-            delete = itemView.findViewById(R.id.buttonDeleteOnItem);
         }
     }
 }

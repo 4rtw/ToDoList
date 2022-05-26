@@ -1,25 +1,27 @@
-package com.artware.todolist;
+package com.artware.todolist.Controler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.artware.todolist.Modele.Task;
+import com.artware.todolist.R;
 import com.artware.todolist.Services.TaskService;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Date;
+import java.util.Objects;
 
 public class AddTaskActivity extends AppCompatActivity {
     TextInputLayout title, category, description, priority;
     Button add, cancel, delete, update;
     TaskService taskService;
-    Task presentTask;
+    Task presentTask, newTask;
     LinearLayout editLinearLayout, createLinearLayout;
     boolean isUpdate = false;
 
@@ -38,7 +40,6 @@ public class AddTaskActivity extends AppCompatActivity {
         createLinearLayout = findViewById(R.id.createLinearLaoyut);
         delete = findViewById(R.id.buttonDelete);
         update = findViewById(R.id.buttonEdit);
-
         add = findViewById(R.id.buttonAdd);
         cancel = findViewById(R.id.buttonCancel);
 
@@ -51,29 +52,34 @@ public class AddTaskActivity extends AppCompatActivity {
 
         if(isUpdate){
             presentTask = taskService.getTaskById(id);
-            title.getEditText().setText(presentTask.getTitle());
-            category.getEditText().setText(presentTask.getCategory());
-            description.getEditText().setText(presentTask.getDescription());
-            priority.getEditText().setText(String.valueOf(presentTask.getPriority()));
+            Objects.requireNonNull(title.getEditText()).setText(presentTask.getTitle());
+            Objects.requireNonNull(category.getEditText()).setText(presentTask.getCategory());
+            Objects.requireNonNull(description.getEditText()).setText(presentTask.getDescription());
+            Objects.requireNonNull(priority.getEditText()).setText(String.valueOf(presentTask.getPriority()));
 
             editLinearLayout.setVisibility(View.VISIBLE);
-            createLinearLayout.setVisibility(View.INVISIBLE);
+            createLinearLayout.setVisibility(View.GONE);
         }
 
-        Task task = new Task();
+        newTask = new Task();
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                task.setTitle(title.getEditText().getText().toString());
-                task.setCategory(category.getEditText().getText().toString());
-                task.setDescription(description.getEditText().getText().toString());
-                int prio = Integer.parseInt(priority.getEditText().getText().toString());
-                task.setPriority(prio);
-                task.setDueDate(new Date());
-                task.setFinished(false);
-                taskService.addTask(task);
-                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                try{
+                    newTask.setTitle(Objects.requireNonNull(title.getEditText()).getText().toString());
+                    newTask.setCategory(Objects.requireNonNull(category.getEditText()).getText().toString());
+                    newTask.setDescription(Objects.requireNonNull(description.getEditText()).getText().toString());
+                    int prio = Integer.parseInt(Objects.requireNonNull(priority.getEditText()).getText().toString());
+                    newTask.setPriority(prio);
+                    newTask.setDueDate(new Date());
+                    newTask.setFinished(false);
+                    taskService.addTask(newTask);
+                    finish();
+                }
+                catch (Exception e){
+                    Log.i("IntError", e.getMessage());
+                }
             }
         });
 
@@ -98,9 +104,9 @@ public class AddTaskActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed(){
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(i);
-        finish();
+    public void finish() {
+        Intent returnIntent = new Intent();
+        setResult(RESULT_OK, returnIntent); //By not passing the intent in the result, the calling activity will get null data.
+        super.finish();
     }
 }

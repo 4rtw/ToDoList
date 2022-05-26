@@ -12,11 +12,13 @@ import androidx.annotation.Nullable;
 
 import com.artware.todolist.Modele.Task;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class SQLiteHelper extends SQLiteOpenHelper {
 
@@ -133,12 +135,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
             String dueDate = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CREATED));
 
-            try {
-                task.setDueDate(new SimpleDateFormat().parse(dueDate));
-            } catch (ParseException e) {
-                task.setDueDate(new Date());
-                e.printStackTrace();
-            }
+            Date date = new Date(dueDate);
+            task.setDueDate(date);
             Log.i("TestID", task.getId());
             tasksList.add(task);
         }

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
-    tools:context=".AddTaskActivity">
+    tools:context=".Controler.AddTaskActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -48,13 +48,16 @@
         android:id="@+id/textFieldTaskDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/d_scription"
+        android:hint="@string/description"
         android:padding="5dp"
         app:startIconDrawable="@drawable/ic_baseline_description_24">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:lines="5"
+            android:maxLines="10" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -69,7 +72,8 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textShortMessage" />
+            android:inputType="number"
+            android:numeric="integer" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

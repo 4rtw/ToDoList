@@ -19,14 +19,17 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="20dp">
 
             <CheckBox
                 android:id="@+id/checkBoxTitleItem"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:checked="true"
-                android:text="Task 1" />
+                android:text="Task 1"
+                android:textSize="24sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/textViewDateItem"
@@ -45,16 +48,6 @@
                 android:text="TextView"
                 android:textColor="#7986CB"
                 android:textSize="12sp" />
-
-            <Button
-                android:id="@+id/buttonDeleteOnItem"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:layout_margin="20dp"
-                android:text="Supprimer"
-                app:icon="@drawable/ic_baseline_delete_24"
-                app:iconGravity="textStart" />
 
         </LinearLayout>
 

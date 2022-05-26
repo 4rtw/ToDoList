@@ -62,10 +62,6 @@ public class Task {
         this.description = description;
     }
 
-    public void setCreated(Date created){
-        this.created = created;
-    }
-
     public Date getCreated() {
         return created;
     }
